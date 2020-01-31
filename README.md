@@ -18,6 +18,10 @@ Custom extensions for Project Flogo
 ![image](https://user-images.githubusercontent.com/4227956/73557493-e595f200-4416-11ea-8ff4-da9bc7cb1bc0.png)
 
 4. A new category called "Custom_array" will be available, with all functions from that category listed on the right hand side, as shown below.
+![image](https://user-images.githubusercontent.com/4227956/73557873-a916c600-4417-11ea-9c06-c27e306c0dfe.png)
 
+Follow same approach as above for other category of functions. At present, there is only one category.
 
-Follow same approach as above for other category of functions.
+# How to Use Custom Functions in Flows:
+
+1. 

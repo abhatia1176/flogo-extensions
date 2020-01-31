@@ -24,6 +24,7 @@ Follow same approach as above for other category of functions. At present, there
 
 # How to Use Custom Functions in Flows:
 
-1. Below screenshot shows an example of using custom array function in a mapper to get sum of all elements in a number array. The mapper is defined with the following schema:
+1. Below screenshot shows an example of using custom array function `sum` in a mapper to get sum of all elements in a number array. The mapper is defined with the following schema:
      `{"sum": 123}`
+     
      ![image](https://user-images.githubusercontent.com/4227956/73559003-e0867200-4419-11ea-809e-0bdf56f6c0a9.png)

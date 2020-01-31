@@ -1,4 +1,4 @@
-module github.com/abhatia1176/flogo-extensions/function/array
+module github.com/abhatia1176/flogo-extensions/function/customarray
 
 require (
 	github.com/project-flogo/core v0.9.3

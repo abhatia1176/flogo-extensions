@@ -5,9 +5,9 @@ Custom extensions for Project Flogo
 
 1. To install array functions, there are two options:
 
-   > Use the following github url - github.com/abhatia1176/flogo-extensions/function/array
+   - Use the following github url - github.com/abhatia1176/flogo-extensions/function/array
        OR
-   > Clone Repo and zip up the directory "array" under "flogo-extensions/function" and upload it to the extensions in Flogo.
+   - Clone Repo and zip up the directory "array" under "flogo-extensions/function" and upload it to the extensions in Flogo.
 
    We will use github url for instructions.
    

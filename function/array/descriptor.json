@@ -1,0 +1,25 @@
+{
+  "name": "custom_array",
+  "type": "flogo:function",
+  "version": "1.0.0",
+  "title": "custom array functions",
+  "author" : "Abhishek Bhatia",
+  "description": "custom array functions",
+  "functions": [
+    {
+      "name": "sum",
+      "description": "Accepts an array of numbers or numeric strings and returns the sum as float64",
+      "example": "custom_array.sum([0,1,2,3,4,5,6,7]) => 28",
+      "args": [
+        {
+          "name": "sourceArray",
+          "type": "array",
+          "valueType": "any"
+        }
+      ],
+      "return": {
+        "type": "float64",
+        "valueType": "float64"
+      }
+    }
+}

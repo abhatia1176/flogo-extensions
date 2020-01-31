@@ -1,13 +1,13 @@
 # flogo-extensions
 Custom extensions for Project Flogo
 
-# How to install Custom Functions: 
+## How to install Custom Functions: 
 
 1. To install array functions, there are two options:
 
-   a. Use the following github url - github.com/abhatia1176/flogo-extensions/function/array
+   > Use the following github url - github.com/abhatia1176/flogo-extensions/function/array
        OR
-   b. Clone Repo and zip up the directory "array" under "flogo-extensions/function" and upload it to the extensions in Flogo.
+   > Clone Repo and zip up the directory "array" under "flogo-extensions/function" and upload it to the extensions in Flogo.
 
    We will use github url for instructions.
    
@@ -22,7 +22,7 @@ Custom extensions for Project Flogo
 
 Follow same approach as above for other category of functions. At present, there is only one category.
 
-# How to Use Custom Functions in Flows:
+## How to Use Custom Functions in Flows:
 
 1. Below screenshot shows an example of using custom array function `sum` in a mapper to get sum of all elements in a number array. The mapper is defined with the following schema:
      `{"sum": 123}`

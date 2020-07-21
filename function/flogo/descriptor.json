@@ -1,0 +1,41 @@
+{
+  "name": "custom_flogo",
+  "type": "flogo:function",
+  "version": "1.0.0",
+  "title": "custom flogo specific functions",
+  "description": "custom flogo specific functions.",
+  "functions": [
+    {
+      "name": "getAppPropertyValue",
+      "description": "This function returns the value of an App Property. Useful for dynamic property lookup. The type of return value will be property's value type or nil.",
+      "example": "custom_flogo.getAppPropertyValue(\"Logging.LogLevel\") => WARN",
+      "args": [
+        {
+          "name": "appPropertyName",
+          "type": "any",
+          "valueType": "any"
+        }
+      ],
+      "return": {
+        "type": "any",
+        "valueType": "any"
+      }
+    },
+    {
+      "name": "getEnvpPropertyValue",
+      "description": "This function returns the value of an Environment Property/Variable. Useful for dynamic property lookup. The type of return value will be property's value type or nil.",
+      "example": "custom_flogo.getEnvpPropertyValue(\"Logging.LogLevel\") => WARN",
+      "args": [
+        {
+          "name": "envPropertyName",
+          "type": "any",
+          "valueType": "any"
+        }
+      ],
+      "return": {
+        "type": "any",
+        "valueType": "any"
+      }
+    }
+  ]
+}

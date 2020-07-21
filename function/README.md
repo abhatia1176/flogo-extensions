@@ -1,7 +1,8 @@
-# flogo-extensions
-Set of Custom extensions for Project Flogo
+# Custom Functions
+Set of Custom Functions for Flogo Enterprise and Flogo on TCI.
 
 ## How to install Custom Functions: 
+The steps below uses array function group as an example, but steps remain the same for any category.
 
 1. To install array functions, there are two options:
 

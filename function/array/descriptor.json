@@ -1,7 +1,7 @@
 {
   "name": "custom_array",
   "type": "flogo:function",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": "custom array functions",
   "author" : "Abhishek Bhatia",
   "description": "custom array functions",
@@ -20,6 +20,22 @@
       "return": {
         "type": "float64",
         "valueType": "float64"
+      }
+    },
+    {
+      "name": "max",
+      "description": "Accepts an array of numbers or numeric strings and returns the max (Data type of returned field is the data type of the max value found)",
+      "example": "custom_array.max([0,1,2,72,4,5,6,7]) => 72",
+      "args": [
+        {
+          "name": "sourceArray",
+          "type": "array",
+          "valueType": "any"
+        }
+      ],
+      "return": {
+        "type": "any",
+        "valueType": "any"
       }
     }
   ]

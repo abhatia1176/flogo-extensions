@@ -18,11 +18,12 @@ func init() {
 	sumFnTestLogger = log.RootLogger()
 	log.SetLogLevel(sumFnTestLogger, log.DebugLevel)
 }
+
 //sunny path case
 func Test_sum_1(t *testing.T) {
-	data :=`[0,1,2,3,4,5,6,7]`
+	data := `[0,1,2,3,4,5,6,7]`
 	err := json.Unmarshal([]byte(data), &sumFnInput)
-	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err!=nil)
+	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err != nil)
 
 	sumFnExpectedOutput = 28
 
@@ -35,9 +36,9 @@ func Test_sum_1(t *testing.T) {
 
 //sunny path - numeric string array with non-integer number
 func Test_sum_2(t *testing.T) {
-	data :=`["0","1","2","3","4","5","6","7.7"]`
+	data := `["0","1","2","3","4","5","6","7.7"]`
 	err := json.Unmarshal([]byte(data), &sumFnInput)
-	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err!=nil)
+	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err != nil)
 
 	sumFnExpectedOutput = 28.7
 
@@ -50,9 +51,9 @@ func Test_sum_2(t *testing.T) {
 
 //error test -- non-numeric element in array
 func Test_sum_3(t *testing.T) {
-	data :=`["0","asdasd","2","3","asd","5","6","7"]`
+	data := `["0","asdasd","2","3","asd","5","6","7"]`
 	err := json.Unmarshal([]byte(data), &sumFnInput)
-	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err!=nil)
+	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err != nil)
 
 	sumFnExpectedOutput = nil
 
@@ -65,9 +66,9 @@ func Test_sum_3(t *testing.T) {
 
 //empty array
 func Test_sum_4(t *testing.T) {
-	data :=`[]`
+	data := `[]`
 	err := json.Unmarshal([]byte(data), &sumFnInput)
-	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err!=nil)
+	sumFnTestLogger.Debug("In tester: Unmarshaled status = ", err != nil)
 
 	sumFnExpectedOutput = 0
 
@@ -86,27 +87,28 @@ func Test_sum_4(t *testing.T) {
 type testStruct struct {
 	Price []json.Number
 }
+
 func Test_sum_5(t *testing.T) {
 
 	//Create a struct with array of json.Number values
-	data := `{"Price": [1, 2.6, -0.2]}`
+	data := `{"Price": [1, 2.6, -0.3]}`
 	res := testStruct{}
 	err := json.Unmarshal([]byte(data), &res)
 
-	sumFnTestLogger.Debug("In tester: Unmarshal status = ", err!=nil)
-	sumFnTestLogger.Debug("In tester: Unmarshal data to struct = ",res)
-	sumFnTestLogger.Debugf("In tester: %+v %T",res.Price[0], res.Price[0])
+	sumFnTestLogger.Debug("In tester: Unmarshal status = ", err != nil)
+	sumFnTestLogger.Debug("In tester: Unmarshal data to struct = ", res)
+	sumFnTestLogger.Debugf("In tester: %+v %T", res.Price[0], res.Price[0])
 
-	sumFnTestLogger.Debugf("In tester: %+v %T",res.Price, res.Price)
+	sumFnTestLogger.Debugf("In tester: %+v %T", res.Price, res.Price)
 
 	//Extract json.Number array and assign to function input
 	var interfaceSlice []interface{} = make([]interface{}, len(res.Price))
 	for i, d := range res.Price {
 		interfaceSlice[i] = d
 	}
-	sumFnTestLogger.Debugf("In tester: %+v %T",interfaceSlice , interfaceSlice )
+	sumFnTestLogger.Debugf("In tester: %+v %T", interfaceSlice, interfaceSlice)
 
-	sumFnInput=interfaceSlice
+	sumFnInput = interfaceSlice
 
 	sumFnExpectedOutput = 3.4
 

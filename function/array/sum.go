@@ -2,6 +2,7 @@ package customarray
 
 import (
 	"fmt"
+
 	"github.com/project-flogo/core/data"
 	"github.com/project-flogo/core/data/coerce"
 	"github.com/project-flogo/core/data/expression/function"
@@ -42,7 +43,7 @@ var sumFnLogger = log.RootLogger()
 * Improving accuracy of sum - http://alex.uwplse.org/2015/10/16/improving-accuracy-summation.html
 * Tips for handling tricky floating point arithmetic - https://www.soa.org/news-and-publications/newsletters/compact/2014/may/com-2014-iss51/losing-my-precision-tips-for-handling-tricky-floating-point-arithmetic/
 *
-*/
+ */
 func (sumFn) Eval(params ...interface{}) (interface{}, error) {
 	if sumFnLogger.DebugEnabled() {
 		sumFnLogger.Debugf("Entering function sum (eval) with param: %+v", params[0])
@@ -59,7 +60,7 @@ func (sumFn) Eval(params ...interface{}) (interface{}, error) {
 		return nil, fmt.Errorf("First argument is not an array. Argument Type is: %T", inputParamValue)
 	}
 
-	if inputArray == nil  {
+	if inputArray == nil {
 		//Do nothing
 		if sumFnLogger.DebugEnabled() {
 			sumFnLogger.Debugf("Input arguments are nil or empty. Will return 0 as output.")
@@ -82,13 +83,12 @@ func (sumFn) Eval(params ...interface{}) (interface{}, error) {
 				sumFnLogger.Debugf("[%+v]: Value at index [%+v] is [%+v], which is of type %T, and is not a number.", k, k, v, v)
 				sumFnLogger.Debugf("[%+v]: Array is not an array of go number types. Cannot compute sum.")
 			}
-			return nil, fmt.Errorf("Value at index [%+v] is [%+v], which is of type %T, and cannot be coerced to float64. " +
+			return nil, fmt.Errorf("Value at index [%+v] is [%+v], which is of type %T, and cannot be coerced to float64. "+
 				"Array is not an array of go number types. Cannot compute sum.", k, v, v)
-		} else {
-			if sumFnLogger.DebugEnabled() {
-				sumFnLogger.Debugf("[%+v]: Successfully coerced the value to float64.", k)
-				sumFnLogger.Debugf("[%+v]: Coerced value is = [%+v]", k, tempOutputValue)
-			}
+		}
+		if sumFnLogger.DebugEnabled() {
+			sumFnLogger.Debugf("[%+v]: Successfully coerced the value to float64.", k)
+			sumFnLogger.Debugf("[%+v]: Coerced value is = [%+v]", k, tempOutputValue)
 		}
 
 		outputValue = outputValue + tempOutputValue

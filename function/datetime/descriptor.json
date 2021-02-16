@@ -1,0 +1,82 @@
+{
+  "name": "customdatetime",
+  "type": "flogo:function",
+  "version": "1.0.0",
+  "title": "custom datetime functions",
+  "author" : "Abhishek Bhatia",
+  "description": "Group of custom datetime functions.",
+  "functions": [
+    {
+      "name": "getTimeInMillis",
+      "author" : "Abhishek Bhatia",
+      "description": "Returns number of milliseconds elapsed since January 1, 1970 UTC [http://en.wikipedia.org/wiki/Unix_time]. It relies on Go's UnixNano [https://golang.org/pkg/time/#Time.UnixNano]",
+      "example": "customdatetime.getTimeInMillis() => 1578474852019",
+      "args": [],
+      "return": {
+        "type": "int64",
+        "valueType": "int64"
+      }
+    },
+    {
+      "name": "getTimeInNano",
+      "author" : "Abhishek Bhatia",
+      "description": "Returns number of nanoseconds elapsed since January 1, 1970 UTC [http://en.wikipedia.org/wiki/Unix_time]. It relies on Go's UnixNano [https://golang.org/pkg/time/#Time.UnixNano]",
+      "example": "customdatetime.getTimeInNano() => 1578474852019466000",
+      "args": [],
+      "return": {
+        "type": "int64",
+        "valueType": "int64"
+      }
+    },
+    {
+      "name": "getCurrentTimestamp",
+      "author" : "Abhishek Bhatia",
+      "description": "Returns current date time in the format specified, with fraction seconds as specified, and the timezone as specified. At present, fraction seconds can be requested as ms, us or ns. However, Timezone is always UTC and other part of the timestamp format is fixed: yyyy-MM-ddThh:mm:ss.<FractionSecond>Z",
+      "example": "customdatetime.getCurrentTimestamp(\"yyyy-MM-ddThh:mm:ss\",\"ns\",\"\") => 2020-01-17T23:26:38.340711300Z",
+      "args": [        {
+        "name": "dateTimeFormatString",
+        "type": "string",
+        "valueType": "string"
+      },
+        {
+          "name": "fractionSeconds",
+          "type": "string",
+          "valueType": "string"
+        },
+        {
+          "name": "timezoneFormatString",
+          "type": "string",
+          "valueType": "string"
+        }],
+      "return": {
+        "type": "string",
+        "valueType": "string"
+      }
+    },
+    {
+      "name": "convertTimestampToEpochTime",
+      "author" : "Abhishek Bhatia",
+      "description": "Returns epoch time (based on the time precision specified in the third parameter - can be requested as s, ms, us or ns). First parameter expects a timestamp, format for which can be provided in the second parameter. If no format is provided, default format is: yyyy-MM-ddThh:mm:ss.<FractionSeconds>Z, and expects input timestamp to be in UTC. All valid formats as specified here (https://golang.org/pkg/time/#pkg-constants) are supported.",
+      "example": "customdatetime.getCurrentTimestamp(\"2020-01-17T23:26:38.340711300Z\",\"\",\"ns\") => ",
+      "args": [        {
+        "name": "timeStampString",
+        "type": "string",
+        "valueType": "string"
+      },
+        {
+          "name": "timeStampFormatString",
+          "type": "string",
+          "valueType": "string"
+        },
+        {
+          "name": "desiredEpochTimePrecision",
+          "type": "string",
+          "valueType": "string"
+        }],
+      "return": {
+        "type": "int64",
+        "valueType": "int64"
+      }
+    }
+  ]
+}

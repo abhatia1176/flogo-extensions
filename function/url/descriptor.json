@@ -1,0 +1,40 @@
+{
+    "name": "customurl",
+    "type": "flogo:function",
+    "version": "1.0.0",
+    "title": "custom url functions",
+    "author" : "Abhishek Bhatia",
+    "description": "Group of custom url functions.",
+    "functions": [
+      {
+        "name": "queryUnescape",
+        "author" : "Abhishek Bhatia",
+        "description": "Returns an unescaped or decoded query string",
+        "example": "customurl.queryUnescape(\"Hi%2C%20How+are%20you%3F\") => \"Hi, How are you?\"",
+        "args": [        {
+            "name": "queryParamToUnescape",
+            "type": "string",
+            "valueType": "string"
+          }],
+        "return": {
+          "type": "string",
+          "valueType": "string"
+        }
+      },
+      {
+        "name": "pathUnescape",
+        "author" : "Abhishek Bhatia",
+        "description": "Returns Unescaped Path Parameter.",
+        "example": "customurl.pathUnescape(\"path%20with%3Freserved+characters\") => \"path with?reserved+characters\"",
+        "args": [        {
+            "name": "pathParamToUnescape",
+            "type": "string",
+            "valueType": "string"
+          }],
+        "return": {
+          "type": "string",
+          "valueType": "string"
+        }
+      }
+    ]
+  }

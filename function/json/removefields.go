@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"regexp"
 
 	"github.com/project-flogo/core/data/coerce"
 
@@ -140,17 +141,67 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 
 			removeFieldsFnLogger.Debugf("[%d] Modified Expression = [%s]", i, tmpExpression)
 
+			//Special handling for search expressions with Array Search (#)
+			removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - START", i)
+			
+			var arrayOfArraySearchExpression []string
+			var inputObjectArray []gjson.Result
+			isArraySearch := false
+			arraySearchExpression := ""
+			inputObjectArrayLength := 0
+			inputObjectArrayCount := 0
+
+			if strings.Contains (tmpExpression, "#") {
+				removeFieldsFnLogger.Debugf("[%d] Search expression is an array Search", i) 
+				isArraySearch = true
+
+				removeFieldsFnLogger.Debugf("[%d] Compiling RegExp to search array element", i) 
+				//m := regexp.MustCompile ("^(.*)\\.#\\.([^\\.]+)")
+				m := regexp.MustCompile ("^(.*)\\.#")
+				arrayOfArraySearchExpression = m.FindAllString(tmpExpression, -1)
+				if len(arrayOfArraySearchExpression) > 0 {
+					arraySearchExpression = arrayOfArraySearchExpression[0]
+				}
+				
+				removeFieldsFnLogger.Debugf("[%d] Updated Search Expression For Input Object Is = [%s]", i, arraySearchExpression) 
+
+				result2 := gjson.Get(inputJsonToUpdateString, arraySearchExpression)
+				inputObjectArray = result2.Array()
+				inputObjectArrayLength = len(inputObjectArray)
+				
+				if inputObjectArrayLength > 0 {
+					inputObjectArrayCount, err = coerce.ToInt(result2.Int())
+				} else {
+					inputObjectArrayCount = inputObjectArrayLength
+				}
+				removeFieldsFnLogger.Debugf("[%d] Total Matching Array Objects in Input = [%s]", i, strconv.Itoa(inputObjectArrayCount)) 
+				/*result2.ForEach(func(key, value gjson.Result) bool {
+					removeFieldsFnLogger.Debugf("[%d] value = [%s]", i, value.String()) 
+					return true // keep iterating
+				})*/
+			}
+			removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - END", i)
+
+			//Special Handling End.
+
 			if inputJsonToUpdateGJsonObject.Get(tmpExpression).Exists() {
 
 				result := gjson.GetBytes(inputJsonToUpdateByteArray, tmpExpression)
 				tmpArray := result.Array()
 				tmpArrayLength := len(tmpArray)
-				//fmt.Println("Length raw is: ", len(result.Raw))
+
 				removeFieldsFnLogger.Debugf("[%d] Array Length = [%d]", i, tmpArrayLength)
 
 				if tmpArrayLength > 0 {
+					if isArraySearch && tmpArrayLength < inputObjectArrayCount {
+						//tmpArray = inputObjectArray
+						tmpArrayLength = inputObjectArrayCount
+						removeFieldsFnLogger.Debugf("[%d] Updated Array Length = [%d]", i, tmpArrayLength)
 
-					for j := range tmpArray {
+					}
+					//for j := range tmpArray {
+					for j := 0; j < tmpArrayLength; j++ {	
+						//removeFieldsFnLogger.Debugf("[%d][%d] Matching Expression Value = [%s]", i, j, value)
 
 						tmpExpressionUpdated := strings.Replace(tmpExpression, "#", strconv.Itoa(j), -1)
 						removeFieldsFnLogger.Debugf("[%d][%d] Modified Expression = [%s]", i, j, tmpExpressionUpdated)

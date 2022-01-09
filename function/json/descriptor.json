@@ -7,6 +7,7 @@
     "functions": [
       {
         "name": "removeFields",
+        "author" : "Abhishek Bhatia",        
         "description": "Use JSONPath expressions to remove field values in a JSON object.",
         "example": "customjson.removeFields(\"{lead:{email:ab@test.com, password: iujajs, crmid:123}}\",[\"$.lead.email\",\"$.lead.password\"],1) => {lead:{crmid:123}}",
         "args": [

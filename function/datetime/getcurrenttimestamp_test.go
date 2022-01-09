@@ -37,7 +37,7 @@ func Test_getCurrentTimestamp_1(t *testing.T) {
 func Test_getCurrentTimestamp_2(t *testing.T) {
 	getCurrentTimestampInput1 = "yyyy-MM-ddThh:mm:ss"
 	getCurrentTimestampInput2 = "ns"
-	getCurrentTimestampInput3 = "Z-0000"
+	getCurrentTimestampInput3 = "Z-0600"
 	getCurrentTimestampExpectedOutput = nil
 
 	getCurrentTimestampActualOutput, getCurrentTimestampError = getCurrentTimestampFnRef.Eval(getCurrentTimestampInput1, getCurrentTimestampInput2, getCurrentTimestampInput3)

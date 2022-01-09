@@ -1,0 +1,31 @@
+{
+    "name": "customjson",
+    "type": "flogo:function",
+    "version": "1.0.0",
+    "title": "custom json functions",
+    "description": "custom json functions",
+    "functions": [
+      {
+        "name": "removeFields",
+        "description": "Use JSONPath expressions to remove field values in a JSON object.",
+        "example": "customjson.removeFields(\"{lead:{email:ab@test.com, password: iujajs, crmid:123}}\",[\"$.lead.email\",\"$.lead.password\"],1) => {lead:{crmid:123}}",
+        "args": [
+          {
+            "name": "jsonObject",
+            "type": "any",
+            "valueType": "any"
+          },
+          {
+            "name": "arrayOfJsonPathExpressions",
+            "type": "array",
+            "valueType": "string"
+          }
+        ],
+        "return": {
+          "type": "any",
+          "valueType": "any"
+        }
+      }
+    ]
+  }
+  

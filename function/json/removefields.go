@@ -35,7 +35,7 @@ func (removeFieldsFn) Sig() (paramTypes []data.Type, isVariadic bool) {
 
 var removeFieldsFnLogger = log.RootLogger()
 
-func removeFieldsFromJson(updatedJsonString *string, i int, tmpExression string, recursionCounter int) (b bool, c bool) {
+/*func removeFieldsFromJson(updatedJsonString *string, i int, tmpExression string, recursionCounter int) (b bool, c bool) {
 	counter := recursionCounter
 
 	if removeFieldsFnLogger.DebugEnabled() {
@@ -132,7 +132,7 @@ func removeFieldsFromJson(updatedJsonString *string, i int, tmpExression string,
 	}//ENDS - if
 
 	counter++;
-}
+}*/
 
 // Eval executes the function
 func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
@@ -240,9 +240,9 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 
 			removeFieldsFnLogger.Debugf("[%d] Modified Expression = [%s]", i, tmpExpression)
 
-			removeNullFieldsFromJson(&inputJsonToUpdateByteArray, tmpExpression, 0)
+			//removeNullFieldsFromJson(&inputJsonToUpdateByteArray, tmpExpression, 0)
 
-		/*
+		
 			//Special handling for search expressions with Array Search (#)
 			removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - START", i)
 			
@@ -330,7 +330,7 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 				removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it does not exist in the input json.", i, expression)
 
 			}//ENDS - if
-		*/
+		
 		} else {
 			removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it is of type [%T]", i, expression, expression)
 		}

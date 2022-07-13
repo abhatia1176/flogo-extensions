@@ -1,7 +1,7 @@
 {
     "name": "customjson",
     "type": "flogo:function",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "title": "custom json functions",
     "description": "custom json functions",
     "functions": [
@@ -26,7 +26,44 @@
           "type": "any",
           "valueType": "any"
         }
-      }
+      },
+      {
+        "name": "removeNullFields",
+        "author" : "Abhishek Bhatia",         
+        "description": "This function removes fields which have null values, from the input json object. It expects a json object and returns a json object with null fields removed.\n// There is an optional second parameter (can be nil), where one can specify an array of strings,\n// where each string value represents name of an object array, ",
+        "example": "customjson.removeNullFields({\"lead\":{\"key1\":null, \"key2\":123,\"arr1\":[\"\"]}},\"arr1\":[{\"name\":\"a\",\"value\":null},{\"name\":\"a\",\"value\":\"123\"}],false,false,false) => {\"lead\":{\"key2\":123,\"arr1\":[{\"name\":\"a\",\"value\":\"123\"}]}}",
+        "args": [
+          {
+            "name": "jsonObject",
+            "type": "any",
+            "valueType": "any"
+          },
+          {
+            "name": "arrayOfArrayNames",
+            "type": "array",
+            "valueType": "string"
+          },
+          {
+            "name": "removeEmptyObjects",
+            "type": "bool",
+            "valueType": "bool"
+          },
+          {
+            "name": "removeArrayIfAnyObjectFromArrayRemoved",
+            "type": "bool",
+            "valueType": "bool"
+          },
+          {
+            "name": "treatEmptyAsNull",
+            "type": "bool",
+            "valueType": "bool"
+          }
+        ],
+        "return": {
+          "type": "any",
+          "valueType": "any"
+        } 
+      }     
     ]
   }
   

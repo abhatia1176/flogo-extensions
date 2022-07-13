@@ -543,3 +543,69 @@ func Test_removeFields_9(t *testing.T) {
 	removeFieldsFnTestLogger.Debug("Updated JSON String: ", string(r))
 
 }
+
+
+//remove fields from an array of an array - fails.
+func Test_removeFields_10(t *testing.T) {
+
+	//declare input data - json to be removed.
+	data := `{
+		"rootArray": [{
+				"email": "ab@test.com",
+				"password": "123456",
+				"test": {
+					"key": "123456",
+					"key2": "7890"
+				}, "array2":[{"subKey":"123","subKey2":"789"},{"subKey":"456","subKey2":"789"}]
+		}, {
+				"email": "ab@test.com",
+				"password": "123456",
+				"apiKey":"asdasd",				
+				"test": {
+					"key": "123456",
+					"key2": "7890",
+					"key3": "7890"					
+				}, "array2":[{"subKey":"123","subKey2":"789"},{"subKey":"456","subKey2":"789"}]
+		}],
+		"eventType": "test"
+	}`
+	json.Unmarshal([]byte(data), &inputJsonDataToRemove)
+
+	//declare input array of jpath expressions
+	arr = `["$.rootArray.0.array2.#.subKey","$.rootArray.#.apiKey", "$.rootArray.#.password", "$.rootArray.#.test.key", "$.rootArray.#.test.key3", "$.eventType", "$.eventType2"]`
+	//declare expected output i.e. updated json string.
+	expectedJsonDataToRemove := `{
+		"rootArray": [{
+				"email": "ab@test.com",
+				"test": {
+					"key2": "7890"
+				}, "array2":[{"subKey2":"789"},{"subKey2":"789"}]
+		}, {
+				"email": "ab@test.com",
+				"test": {
+					"key2": "7890"
+				}, "array2":[{"subKey2":"789"},{"subKey2":"789"}]
+		}]
+	}`
+
+	//unmarshal input fields to redact array, and expected output.
+	//expected output is unmarshaled, so it is easy to compare.
+	json.Unmarshal([]byte(arr), &inputFieldsToRemove)
+	json.Unmarshal([]byte(expectedJsonDataToRemove), &expectedJsonDataRemoved)
+
+	actualJsonDataRemoved, err := removeFieldsFnRef.Eval(inputJsonDataToRemove, inputFieldsToRemove, 1)
+
+	//print actual output.
+	removeFieldsFnTestLogger.Debug("Actual Output = ", actualJsonDataRemoved)
+
+	//assert error is nil.
+	assert.Nil(t, err)
+
+	//assert input matches output.
+	assert.EqualValues(t, expectedJsonDataRemoved, actualJsonDataRemoved)
+
+	//Print the redacted json output. Could print the string output of function directly as well.
+	r, _ := json.Marshal(actualJsonDataRemoved)
+	removeFieldsFnTestLogger.Debug("Updated JSON String: ", string(r))
+
+}

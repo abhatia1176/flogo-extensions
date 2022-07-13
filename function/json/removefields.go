@@ -35,6 +35,105 @@ func (removeFieldsFn) Sig() (paramTypes []data.Type, isVariadic bool) {
 
 var removeFieldsFnLogger = log.RootLogger()
 
+func removeFieldsFromJson(updatedJsonString *string, i int, tmpExression string, recursionCounter int) (b bool, c bool) {
+	counter := recursionCounter
+
+	if removeFieldsFnLogger.DebugEnabled() {
+		removeFieldsFnLogger.Debug("[", counter, "] ", "Enter Recursion Function.")
+		removeNullFieldsFnLogger.Debugf("[%+v] with expression = <<%+v>>", counter, tmpExression)
+	}
+
+	//Special handling for search expressions with Array Search (#)
+	removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - START", i)
+
+	var arrayOfArraySearchExpression []string
+	var inputObjectArray []gjson.Result
+	isArraySearch := false
+	arraySearchExpression := ""
+	inputObjectArrayLength := 0
+	inputObjectArrayCount := 0
+
+	if strings.Contains (tmpExpression, "#") {
+		removeFieldsFnLogger.Debugf("[%d] Search expression is an array Search", i) 
+		isArraySearch = true
+
+		removeFieldsFnLogger.Debugf("[%d] Compiling RegExp to search array element", i) 
+		//m := regexp.MustCompile ("^(.*)\\.#\\.([^\\.]+)")
+		m := regexp.MustCompile ("^(.*)\\.#")
+		arrayOfArraySearchExpression = m.FindAllString(tmpExpression, -1)
+		if len(arrayOfArraySearchExpression) > 0 {
+			arraySearchExpression = arrayOfArraySearchExpression[0]
+		}
+		
+		removeFieldsFnLogger.Debugf("[%d] Updated Search Expression For Input Object Is = [%s]", i, arraySearchExpression) 
+
+		result2 := gjson.Get(inputJsonToUpdateString, arraySearchExpression)
+		inputObjectArray = result2.Array()
+		inputObjectArrayLength = len(inputObjectArray)
+		
+		if inputObjectArrayLength > 0 {
+			inputObjectArrayCount, err = coerce.ToInt(result2.Int())
+		} else {
+			inputObjectArrayCount = inputObjectArrayLength
+		}
+		removeFieldsFnLogger.Debugf("[%d] Total Matching Array Objects in Input = [%s]", i, strconv.Itoa(inputObjectArrayCount)) 
+
+	}
+	removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - END", i)
+
+	//Special Handling End.
+
+	if inputJsonToUpdateGJsonObject.Get(tmpExpression).Exists() {
+
+		result := gjson.GetBytes(inputJsonToUpdateByteArray, tmpExpression)
+		tmpArray := result.Array()
+		tmpArrayLength := len(tmpArray)
+
+		removeFieldsFnLogger.Debugf("[%d] Array Length = [%d]", i, tmpArrayLength)
+
+		if tmpArrayLength > 0 {
+			if isArraySearch && tmpArrayLength < inputObjectArrayCount {
+				//tmpArray = inputObjectArray
+				tmpArrayLength = inputObjectArrayCount
+				removeFieldsFnLogger.Debugf("[%d] Updated Array Length = [%d]", i, tmpArrayLength)
+
+			}
+			//for j := range tmpArray {
+			for j := 0; j < tmpArrayLength; j++ {	
+				//removeFieldsFnLogger.Debugf("[%d][%d] Matching Expression Value = [%s]", i, j, value)
+
+				tmpExpressionUpdated := strings.Replace(tmpExpression, "#", strconv.Itoa(j), -1)
+				removeFieldsFnLogger.Debugf("[%d][%d] Modified Expression = [%s]", i, j, tmpExpressionUpdated)
+
+				removeFieldsFnLogger.Debugf("[%d][%d] Removing field from JSON.", i, j)
+				inputJsonToUpdateByteArray, err = sjson.DeleteBytes(inputJsonToUpdateByteArray, tmpExpressionUpdated)
+
+				if err != nil {
+					removeFieldsFnLogger.Debugf("[%d][%d] Unable to delete field [%s] from json object <<%+v>>.", i, j, tmpExpressionUpdated, string(inputJsonToUpdateByteArray))
+					return nil, fmt.Errorf("unable to delete field [%s] from json object <<%+v>>", tmpExpressionUpdated, string(inputJsonToUpdateByteArray))
+				}
+
+				if removeFieldsFnLogger.DebugEnabled() {
+					removeFieldsFnLogger.Debugf("[%d][%d] Updated JSON is = <<%v>>", i, j, string(inputJsonToUpdateByteArray))
+				}
+
+			}
+			if removeFieldsFnLogger.DebugEnabled() {
+
+				removeFieldsFnLogger.Debugf("[%d] Completed removal of field(s) for expression = [%v]", i, expressionString)
+				removeFieldsFnLogger.Debugf("[%d] Updated JSON at the end of iteration is = <<%v>>", i, string(inputJsonToUpdateByteArray))
+			}
+		} else {
+			removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression For Array Search = [%s] as it does not exist in the input json.", i, expression)
+		}
+	} else {
+		removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it does not exist in the input json.", i, expression)
+
+	}//ENDS - if
+
+	counter++;
+}
+
 // Eval executes the function
 func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 
@@ -141,6 +240,9 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 
 			removeFieldsFnLogger.Debugf("[%d] Modified Expression = [%s]", i, tmpExpression)
 
+			removeNullFieldsFromJson(&inputJsonToUpdateByteArray, tmpExpression, 0)
+
+		/*
 			//Special handling for search expressions with Array Search (#)
 			removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - START", i)
 			
@@ -175,10 +277,7 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 					inputObjectArrayCount = inputObjectArrayLength
 				}
 				removeFieldsFnLogger.Debugf("[%d] Total Matching Array Objects in Input = [%s]", i, strconv.Itoa(inputObjectArrayCount)) 
-				/*result2.ForEach(func(key, value gjson.Result) bool {
-					removeFieldsFnLogger.Debugf("[%d] value = [%s]", i, value.String()) 
-					return true // keep iterating
-				})*/
+
 			}
 			removeFieldsFnLogger.Debugf("[%d] Special Handling for search expression with # - END", i)
 
@@ -230,7 +329,8 @@ func (removeFieldsFn) Eval(params ...interface{}) (interface{}, error) {
 			} else {
 				removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it does not exist in the input json.", i, expression)
 
-			}
+			}//ENDS - if
+		*/
 		} else {
 			removeFieldsFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it is of type [%T]", i, expression, expression)
 		}

@@ -6,8 +6,8 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/project-flogo/core v0.9.3
 	github.com/stretchr/testify v1.3.0
-	github.com/tidwall/gjson v1.3.5
-	github.com/tidwall/sjson v1.0.4
+	github.com/tidwall/gjson v1.14.1
+	github.com/tidwall/sjson v1.2.4
 )
 
 go 1.13

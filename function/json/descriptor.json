@@ -1,7 +1,7 @@
 {
     "name": "customjson",
     "type": "flogo:function",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "title": "custom json functions",
     "description": "custom json functions",
     "functions": [
@@ -63,7 +63,43 @@
           "type": "any",
           "valueType": "any"
         } 
-      }     
+      },
+      {
+        "name": "setFieldValues",
+        "description": "Use JSONPath expressions to set field values in a JSON object. There are three set operations available. Valid values are insert, update or upsert. Set fourth parameter to true to throw error if duplicate key is being inserted. Set fifth parameter to true to throw error if Key is not found for updating.",
+        "example": "customjson.setFieldValues(\"{lead:{email:ab@test.com, password: iujajs, crmid:123}}\",[{\"name\":\"$.lead.email\",\"value\":\"pq@yopmail.com\"}],\"update\",false,false) => {lead:{email:pq@yopmail.com, password: iujajs, crmid:123}}",
+        "args": [
+          {
+            "name": "jsonObj",
+            "type": "any",
+            "valueType": "any"
+          },
+          {
+            "name": "arrayOfJSONPathExpressions",
+            "type": "array",
+            "valueType": "any"
+          },
+          {
+            "name": "operation",
+            "type": "string",
+            "valueType": "string"
+          },
+          {
+            "name": "throwErrorOnDupKeyInJson",
+            "type": "bool",
+            "valueType": "bool"
+          },
+          {
+            "name": "throwErrorOnKeyNotInJson",
+            "type": "bool",
+            "valueType": "bool"
+          }	
+        ],
+        "return": {
+          "type": "any",
+          "valueType": "any"
+        }
+      }           
     ]
   }
   

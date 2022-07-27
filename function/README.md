@@ -13,6 +13,8 @@ The steps below uses array function group as an example, but steps remain the sa
    - Flogo: github.com/abhatia1176/flogo-extensions/function/flogo
    - URL: github.com/abhatia1176/flogo-extensions/function/url
    - DateTime: github.com/abhatia1176/flogo-extensions/function/datetime
+   - JSON - github.com/abhatia1176/flogo-extensions/function/json
+   - Array - github.com/abhatia1176/flogo-extensions/function/array
    
 2. Go to "Environment & Tools" tab on TCI or TIBCO Flogo Enterprise, select "Extensions" under "Connector Management & Extensions".  On the next page, clikc on Upload. The screenshot below shows the use of github url. Once you click import, the function(s) will be imported as new extension. Please note that this will add a new category called custom_array under extensions. This can be changed by updating the descriptor.json file for that category.
 ![image](https://user-images.githubusercontent.com/4227956/73557110-42dd7380-4416-11ea-98d8-7d7747b90717.png)

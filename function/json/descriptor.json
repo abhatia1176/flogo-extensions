@@ -1,7 +1,7 @@
 {
     "name": "customjson",
     "type": "flogo:function",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "custom json functions",
     "description": "custom json functions",
     "functions": [

@@ -453,3 +453,83 @@ func Test_setFieldValues_7(t *testing.T) {
 	r, _ := json.Marshal(actualJsonDataUpdated)
 	setFieldValuesFnTestLogger.Debug("Updated JSON String: ", string(r))
 }
+
+
+//Test 8 - positive test case
+//Final Replacement values are a combination of string and object.
+//Input is JSON Object.
+func Test_setFieldValues_8(t *testing.T) {
+
+	indata = `{
+        "lead": {
+            "name": "Test1",
+            "lastname": "Test2",			
+			"password": "123123",
+			"age": 29,
+			"test": {
+					"key":"123456"
+			}
+        },
+        "eventType": "test"
+    }`
+
+	json.Unmarshal([]byte(indata), &inputJsonObjectToUpdate)
+	inputJsonStringToUpdate = indata
+
+	//declare input array of jpath expressions
+	arr := `[
+		{
+		  "name": "$.lead.lastname",
+		  "value": {"ln1": "Bhatia", "ln2": "BHATIA"}
+		},
+		{
+		  "name": "$.lead.name",
+		  "value": "Abhishek"
+		},
+		{
+		  "name": "$.lead.age",
+		  "value": 33
+		},
+		{
+			"name": "$.lead.response_types",
+			"value": ["token","id_token"]
+		  }
+	  ]`
+	//declare expected output i.e. redacted json string.
+	expectedJsonDataToUpdate := `{
+        "lead": {
+            "name": "Abhishek",
+            "lastname": {"ln1": "Bhatia", "ln2": "BHATIA"},			
+			"password": "123123",
+			"age": 33,
+			"test": {
+					"key":"123456"
+			},
+			"response_types":["token","id_token"]
+        },
+        "eventType": "test"
+    }`
+
+	//unmarshal array of jpath expressions, and expected output updated json string.
+	json.Unmarshal([]byte(arr), &inputFieldsToUpdate)
+	json.Unmarshal([]byte(expectedJsonDataToUpdate), &expectedJsonDataUpdated)
+
+	//invoke function under test.
+	actualJsonDataUpdatedInterface, err := setFieldValuesFnRef.Eval(inputJsonObjectToUpdate, inputFieldsToUpdate, "upsert", false, false)
+
+	//convert function output to map[string] interface, using unmarshal.
+	actualJsonDataUpdated := actualJsonDataUpdatedInterface.(map[string]interface{})
+
+	//print actual output.
+	setFieldValuesFnTestLogger.Debug("Actual Output = ", actualJsonDataUpdated)
+
+	//assert error is nil.
+	assert.Nil(t, err)
+
+	//assert input matches output.
+	assert.EqualValues(t, expectedJsonDataUpdated, actualJsonDataUpdated)
+
+	//Print the updated json output.
+	r, _ := json.Marshal(actualJsonDataUpdated)
+	setFieldValuesFnTestLogger.Debug("Updated JSON String: ", string(r))
+}

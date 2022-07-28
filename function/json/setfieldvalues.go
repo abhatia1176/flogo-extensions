@@ -266,11 +266,22 @@ func (setFieldValuesFn) Eval(params ...interface{}) (interface{}, error) {
 			}
 			if !doNotProcess {
 				if inputGJsonObject.Get(tmpExpression).Exists() {
-					//use sjson set function to update the value and assign it back to JsonString.
-					updatedJsonString, _ = sjson.Set(updatedJsonString, tmpExpression, replacementValue)
-				} else {
-					setFieldValuesFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it does not exist in the input json.", i, expression)
+					if (inputOperation == "upsert" || inputOperation == "update") {
+						//use sjson set function to update the value and assign it back to JsonString.
+						updatedJsonString, _ = sjson.Set(updatedJsonString, tmpExpression, replacementValue)
+						setFieldValuesFnLogger.Debugf("[%d] Update Input Expression = [%s] with value = [%s] as it exists in the input json.", i, expression, replacementValue)
+					} else {
+						setFieldValuesFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it exists in the input json but operation is not update/upsert.", i, expression)
+					}
 
+				} else {
+					
+					if (inputOperation == "upsert" || inputOperation == "insert") { 
+						updatedJsonString, _ = sjson.Set(updatedJsonString, tmpExpression, replacementValue)
+						setFieldValuesFnLogger.Debugf("[%d] Insert Input Expression = [%s] with value = [%s] as it does not exist in the input json.", i, expression, replacementValue)
+					} else {
+						setFieldValuesFnLogger.Debugf("[%d] Ignore Input Expression = [%s] as it does not exist in the input json.", i, expression)
+					}
 				}
 			} else {
 				setFieldValuesFnLogger.Debugf("[%d] JSON Update Skipped.", i)

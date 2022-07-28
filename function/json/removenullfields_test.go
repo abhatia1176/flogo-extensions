@@ -578,3 +578,36 @@ func Test_removeNullFields_10(t *testing.T) {
 	//assert input matches output.
 	assert.EqualValues(t, removeNullFieldsFnExpectedOutputJsonObject, removeNullFieldsFnActualOutputJsonObject)
 }
+
+//sunny path case - all fields are null.
+func Test_removeNullFields_11(t *testing.T) {
+	//Set input parameter 1 = json object
+	removeNullFieldsFnInputJsonString = `{
+		"field1":null,
+		"field2":null
+	}`
+	json.Unmarshal([]byte(removeNullFieldsFnInputJsonString), &removeNullFieldsFnInputJsonObject)
+
+	//Set input parameter 2 = json array
+	removeNullFieldsFnInputArrayOfArrayNamesString := ``
+	json.Unmarshal([]byte(removeNullFieldsFnInputArrayOfArrayNamesString), &removeNullFieldsFnInputArrayOfArrayNamesObject)
+
+	//Setup expected output
+	removeNullFieldsFnExpectedOutputJsonString = `{}`
+	json.Unmarshal([]byte(removeNullFieldsFnExpectedOutputJsonString), &removeNullFieldsFnExpectedOutputJsonObject)
+
+	//invoke function under test.
+	removeNullFieldsFnActualOutput, err := removeNullFieldsFnRef.Eval(removeNullFieldsFnInputJsonObject, removeNullFieldsFnInputArrayOfArrayNamesObject, false, false, true)
+
+	//convert function output to map[string] interface{}.
+	removeNullFieldsFnActualOutputJsonObject = removeNullFieldsFnActualOutput.(map[string]interface {})
+
+	//print actual output.
+	removeNullFieldsFnTestLogger.Debug("Actual Output = ",removeNullFieldsFnActualOutputJsonObject)
+
+	//assert error is nil.
+	assert.Nil(t, err)
+
+	//assert input matches output.
+	assert.EqualValues(t, removeNullFieldsFnExpectedOutputJsonObject, removeNullFieldsFnActualOutputJsonObject)
+}
